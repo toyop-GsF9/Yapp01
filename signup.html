@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #F0F8FF;
+		}
+
+		h1 {
+			color: #4682B4;
+			text-align: center;
+		}
+
+		form {
+			width: 300px;
+			margin: 0 auto;
+			border: 1px solid #CCCCCC;
+			padding: 20px;
+			background-color: #FFFFFF;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		input {
+			width: 100%;
+			height: 30px;
+			border: 1px solid #CCCCCC;
+			padding: 5px;
+		}
+
+		button {
+			width: 100%;
+			height: 40px;
+			border: none;
+			background-color: #4682B4;
+			color: #FFFFFF;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+
+
+<body>
+	<h1>アプリ登録</h1>
+	<form>
+		<label for="name">名前</label>
+		<input type="text" id="name" name="name" placeholder="山田太郎" required>
+		<label for="email">メールアドレス</label>
+		<input type="email" id="email" name="email" placeholder="example@example.com" required>
+		<label for="password">パスワード</label>
+		<input type="password" id="password" name="password" placeholder="8文字以上" required
+			autocomplete="current-password">
+		<button type="submit" id="register">登録する</button>
+	</form>
+
+	<script type="module">
+		// Import the functions you need from the SDKs you need
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+		import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
+
+		// Your web app's Firebase configuration
+		const firebaseConfig = {
+			apiKey: "AIzaSyArp3gRQopWq9qgxW8tdq2Qa1tjwokW4ew",
+			authDomain: "y-app-c4207.firebaseapp.com",
+			projectId: "y-app-c4207",
+			storageBucket: "y-app-c4207.appspot.com",
+			messagingSenderId: "296288062343",
+			appId: "1:296288062343:web:6dad26676c34587e94a122"
+		};
+
+		// Initialize Firebase
+		const app = initializeApp(firebaseConfig);
+		const db = getFirestore(app);
+
+		// HTMLフォームの要素を取得
+		var nameInput = document.getElementById("name");
+		var emailInput = document.getElementById("email");
+		var passwordInput = document.getElementById("password");
+		var registerButton = document.getElementById("register");
+
+		// ボタンがクリックされたら、フォームの値をオブジェクトにしてFirestoreに送信
+		registerButton.addEventListener("click", async function (event) {
+			event.preventDefault(); // フォームのデフォルトの送信動作をキャンセル
+
+			var data = {
+				name: nameInput.value,
+				email: emailInput.value,
+				password: passwordInput.value
+			};
+
+			try {
+				await setDoc(doc(db, "users", data.email), data);
+				console.log("登録完了");
+			} catch (error) {
+				console.error("登録エラー", error);
+			}
+		});
+	</script>
+</body>
+
+</html>
+
+
+<!-- <body>
+	<h1>アプリ登録</h1>
+	<form>
+		<label for="name">名前</label>
+		<input type="text" id="name" name="name" placeholder="山田太郎" required>
+		<label for="email">メールアドレス</label>
+		<input type="email" id="email" name="email" placeholder="example@example.com" required>
+		<label for="password">パスワード</label>
+		<input type="password" id="password" name="password" placeholder="8文字以上" required
+			autocomplete="current-password">
+		<button type="submit" id="register">登録する</button>
+	</form>
+	<script type="module">
+		// Import the functions you need from the SDKs you need
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+		import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
+		// TODO: Add SDKs for Firebase products that you want to use
+		// https://firebase.google.com/docs/web/setup#available-libraries
+
+		// Your web app's Firebase configuration
+		const firebaseConfig = {
+			apiKey: "AIzaSyArp3gRQopWq9qgxW8tdq2Qa1tjwokW4ew",
+			authDomain: "y-app-c4207.firebaseapp.com",
+			projectId: "y-app-c4207",
+			storageBucket: "y-app-c4207.appspot.com",
+			messagingSenderId: "296288062343",
+			appId: "1:296288062343:web:6dad26676c34587e94a122"
+		};
+
+		// Initialize Firebase
+		const app = initializeApp(firebaseConfig);
+		import {
+			getFirestore,
+			collection,
+			addDoc,
+			serverTimestamp,
+		} from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
+		const db = getFirestore(app);
+
+		// HTMLフォームの要素を取得
+		var name = document.getElementById("name");
+		var email = document.getElementById("email");
+		var password = document.getElementById("password");
+		var button = document.getElementById("register");
+
+		// ボタンがクリックされたら、フォームの値をオブジェクトにしてfirestoreに送信
+		button.addEventListener("click", async function () {
+			var data = {
+				name: name.value,
+				email: email.value,
+				password: password.value
+			};
+			await setDoc(doc(db, "users", data.email), data);
+		});
+	</script>
+</body>
+
+</html> -->

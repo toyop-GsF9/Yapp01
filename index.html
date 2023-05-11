@@ -1,0 +1,190 @@
+<html>
+
+<head>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-image: url("background-image.jpg");
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-color: rgba(240, 248, 255, 0.8);
+		}
+
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		.logo {
+			text-align: center;
+		}
+
+		.logo img {
+			width: 200px;
+		}
+
+		.menu {
+			display: flex;
+			justify-content: space-around;
+			list-style: none;
+			padding: 0;
+		}
+
+		.menu li {
+			font-weight: bold;
+		}
+
+		.menu li a {
+			color: #333;
+			text-decoration: none;
+		}
+
+		.menu li a:hover {
+			color: #666;
+		}
+
+		.main {
+			background-color: #fff;
+			padding: 20px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			margin-top: 80px;
+		}
+
+		.main h1 {
+			font-size: 24px;
+			margin: 0 0 20px 0;
+			text-align: center;
+			color: #4682B4;
+		}
+
+		.main p {
+			font-size: 16px;
+			line-height: 1.5;
+			margin-bottom: 20px;
+		}
+
+		.form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.form label {
+			font-size: 14px;
+			margin-bottom: 5px;
+		}
+
+		.form input {
+			font-size: 16px;
+			padding: 10px;
+			border: 1px solid #ccc;
+			margin-bottom: 10px;
+			width: 100%;
+		}
+
+		.form button {
+			font-size: 16px;
+			padding: 10px;
+			background-color: #4682B4;
+			color: #fff;
+			border: none;
+			cursor: pointer;
+			width: 100%;
+		}
+
+		.form button:hover {
+			background-color: #666;
+		}
+
+		.form a {
+			font-size: 14px;
+			color: #333;
+			text-decoration: none;
+		}
+
+		.form a:hover {
+			color: #666;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="main">
+			<h1>ログイン画面</h1>
+			<form class="form" action="#" method="post" id="loginForm">
+				<label for="email">メールアドレス</label>
+				<input type="email" id="email" name="email" placeholder="example@example.com" required>
+				<label for="password">パスワード</label>
+				<input type="password" id="password" name="password" placeholder="********" required>
+				<button type="submit">ログイン</button>
+				<a href="signup.html">新規登録はこちら</a>
+			</form>
+			<p id="messe"></p>
+		</div>
+	</div>
+
+
+	<script type="module">
+		// Import the functions you need from the SDKs you need
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+		import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
+
+		// Your web app's Firebase configuration
+		const firebaseConfig = {
+			apiKey: "AIzaSyArp3gRQopWq9qgxW8tdq2Qa1tjwokW4ew",
+			authDomain: "y-app-c4207.firebaseapp.com",
+			projectId: "y-app-c4207",
+			storageBucket: "y-app-c4207.appspot.com",
+			messagingSenderId: "296288062343",
+			appId: "1:296288062343:web:6dad26676c34587e94a122"
+		};
+
+		// Initialize Firebase
+		const app = initializeApp(firebaseConfig);
+		const db = getFirestore(app);
+
+		// フォームの要素を取得
+		const loginForm = document.getElementById("loginForm");
+		const emailInput = document.getElementById("email");
+		const passwordInput = document.getElementById("password");
+
+		// フォームの送信イベントをリスン
+		loginForm.addEventListener("submit", async function (event) {
+			event.preventDefault(); // フォームのデフォルトの送信動作をキャンセル
+
+			const email = emailInput.value;
+			const password = passwordInput.value;
+
+			try {
+				// Firestoreからユーザーデータを取得
+				const usersRef = collection(db, "users");
+				const q = query(usersRef, where("email", "==", email));
+				const querySnapshot = await getDocs(q);
+
+				if (querySnapshot.empty) {
+					console.log("ユーザーが存在しません。");
+					messe.textContent = "ユーザーが存在しません。";
+				} else {
+					const userDoc = querySnapshot.docs[0];
+					const userData = userDoc.data();
+
+					if (userData.password === password) {
+						console.log("ログインに成功しました。");
+						// ログイン成功時の処理を追加
+						window.location.href = "next02.html"; // ログイン成功時に次のページに遷移する
+					} else {
+						console.log("パスワードが間違っています。");
+						messe.textContent = "パスワードが間違っています。";
+					}
+				}
+			} catch (error) {
+				console.log("ログインに失敗しました。エラー: ", error);
+			}
+		});
+	</script>
+</body>
+
+</html>

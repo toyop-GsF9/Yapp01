@@ -5,7 +5,8 @@
 	<meta charset="utf-8">
 	<title>地図アプリ</title>
 	<script type="text/javascript"
-		src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=ja-JP"></script>
+		src="https://www.bing.com/api/maps/mapcontrol?callback=loadMapScenario" 
+		async defer></script>
 	<style>
 		#map {
 			width: 800px;
@@ -24,7 +25,7 @@
 	<button id="clear">地点を消す</button>
 	<script>
 		// Bing Maps API キー
-		var key = "";
+		var key = "AmOcgWWbeoD2FKgaZMOZ-GS1Qh37cs587BuOPjsXhw9W4r18WXZmpBotx644x8mR";
 
 		// マップオブジェクトの作成
 		var map = new Microsoft.Maps.Map(document.getElementById("map"), {
